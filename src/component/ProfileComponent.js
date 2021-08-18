@@ -141,6 +141,7 @@ class ProfileComponent extends Component{
 
 
 
+
                                             <img src={avatar} alt="" className="image" id="avatarImage"></img> 
                                             
                                             <div className="middle">
