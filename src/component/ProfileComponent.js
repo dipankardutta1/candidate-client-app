@@ -4,6 +4,8 @@ import avatar from '../images/avatar.png';
 import axios from 'axios';
 import App,{ updateAppState } from '../App';
 import ReactDOM from 'react-dom';
+import Moment from 'moment';
+import { SummaryModelComponent } from './SummaryModelComponent';
 
 class ProfileComponent extends Component{
 
@@ -11,6 +13,7 @@ class ProfileComponent extends Component{
 
     constructor() {
         super();
+
         this.state = {
             "msg": "",
             "output": {
@@ -37,24 +40,29 @@ class ProfileComponent extends Component{
                 "summary": "NA",
                 "placeOfBirth": "NA",
                 "maritalStatus": "",
-                "addresses": null,
+                "addresses": [],
                 "isAvatarUploaded": null,
                 "isResumeUploaded": null,
                 "salaryTypes": null,
-                "phones": null,
-                "mobiles": null,
+                "phones": [],
+                "mobiles": [],
                 "workAuthorizations": null,
-                "documents": null,
-                "skils": null,
-                "educationEntries": null,
-                "experienceEntries": null,
-                "socialProfiles": null,
-                "hobbies": null,
-                "languages": null,
-                "jobLocations": null
+                "documents": [],
+                "skils": [],
+                "educationEntries":[],
+                "experienceEntries": [],
+                "socialProfiles": [],
+                "hobbies": [],
+                "languages": [],
+                "jobLocations": []
             },
             "httpStatus": ""
         };
+
+
+        //this.summarySubmitHandler = this.summarySubmitHandler.bind(this);
+
+
       }
 
 
@@ -94,20 +102,12 @@ class ProfileComponent extends Component{
           instanceClient.get('resource/candidate/find/fullCandidate/byEmail?email='+res.data.name)
           .then( res => {
             console.log("Success---- " + JSON.stringify(res.data));
-          
-
-
-           
            this.setState(res.data);
-
+          
           }, err => {
             updateAppState({ authenticated: false})
             console.log("erroe1");
           });
-
-            
-
-           
             
           },
           err => {
@@ -120,7 +120,9 @@ class ProfileComponent extends Component{
       }
 
 
+      
 
+      
 
     render(){
         return(
@@ -168,12 +170,12 @@ class ProfileComponent extends Component{
                                                 <i className="fa fa-phone"></i>
                                             </div>
                                             <div className="detail" id="contactFragment">
-
+                                            {(this.state.output.mobiles || []).map(obj => (
                                                 <div >
-                                                    <span>900008765</span>
+                                                    <span>{obj.mobileNumber}</span>
                                                 </div>
 
-
+                                            ))}
 
 
                                             </div>
@@ -183,8 +185,12 @@ class ProfileComponent extends Component{
                                                 <i className="fas fa-globe-americas"></i>
                                             </div>
                                             <div class="detail">
-                                                <span >dipankar0007@gmail.com</span> <br/> 
-                                                <span>dipankar0007alt@gmail.com</span>
+                                            {(this.state.output.mobiles || []).map(obj => (
+                                                <div>
+                                                <span >{obj.mobileNumber}</span> <br/> 
+                                                </div>
+                                            ))}
+
                                             </div>
                                         </div>
                                         
@@ -197,27 +203,42 @@ class ProfileComponent extends Component{
 
                                         </h4>
                                         <ul className="row social-link no-margin" id="socialFragment">
-                                            <li>
-                                                <i className="fab fa-facebook-f"></i>
-                                                <span style={{ marginLeft: "10px" }} >FaceBook</span>
-
-                                            </li>
+                                        {(this.state.output.socialProfiles || []).map(obj => (
+                                            <div>
+                                                {obj.type==='FaceBook' &&
+                                                 <li>
+                                                 <i className="fab fa-facebook-f"></i>
+                                                 <span style={{ marginLeft: "10px" }} >{obj.url}</span>
+ 
+                                                 </li>
+                                                }
+                                               {obj.type==='Twitter' &&
                                             <li>
                                                 <i className="fab fa-twitter"></i>
-                                                <span style={{marginLeft: "10px"}} >Twitter</span>
+                                                <span style={{marginLeft: "10px"}} >{obj.url}</span>
                                             </li>
+                                                }
+                                                  {obj.type==='linkedin' &&
                                             <li>
                                                 <i className="fab fa-linkedin-in"></i>
-                                                <span style={{marginLeft: "10px"}} >linkedin</span>
+                                                <span style={{marginLeft: "10px"}} >{obj.url}</span>
                                             </li>
+                                                }
+                                                {obj.type==='github' &&
                                             <li>
                                                 <i className="fab fa-github"></i>
-                                                <span style={{marginLeft: "10px"}} >github</span>
+                                                <span style={{marginLeft: "10px"}} >{obj.url}</span>
                                             </li>
+                                                }
+                                                 {obj.type==='exclamation' &&
                                             <li>
                                                 <i className="fas fa-exclamation"></i>
-                                                <span style={{marginLeft: "10px"}} >exclamation</span>
+                                                <span style={{marginLeft: "10px"}} >{obj.url}</span>
                                             </li>
+                                                }
+                                            </div>
+                                        ))}
+                                            
                                         </ul>
                                        
 
@@ -228,41 +249,56 @@ class ProfileComponent extends Component{
                                                     <i className="fa fa-edit"></i>Edit</a>
                                             </h4>
                                             <ul className="hoby row no-margin" id="hobbyFragment">
-                                            <li>
-                                                <i className="fas fa-pencil-alt"></i>
-                                                <br/> 
-                                                <span>pencil</span>
-                                            </li>
-                                            <li>
-                                                <i className="fas fa-bicycle"></i>
-                                                <br/> 
-                                                <span>pencil</span>
-                                            </li>
-                                            <li>
-                                                <i className="fas fa-futbol"></i> 
-                                                <br/> 
-                                                <span>pencil</span> 
-                                            </li>
-                                            <li>
-                                                <i className="fas fa-film"></i>
-                                                <br/> 
-                                                <span>pencil</span>
-                                            </li>
-                                            <li>
-                                                <i className="fas fa-plane-departure"></i>
-                                                <br/> 
-                                                <span>pencil</span>
-                                            </li>
-                                            <li>
-                                                <i className="fas fa-gamepad"></i>
-                                                <br/> 
-                                                <span>pencil</span>
-                                            </li>
-                                            <li>
-                                                <i className="fas fa-exclamation"></i>
-                                                <br/> 
-                                                <span>pencil</span>
-                                            </li>
+                                            {(this.state.output.hobbies || []).map(obj => (
+                                                <div>
+                                                    {obj.type==='writing' &&
+                                                    <li>
+                                                    <i className="fas fa-pencil-alt"></i>
+                                                    <br/> 
+                                                    <span>{obj.hobby}</span>
+                                                </li>
+                                                    }
+                                                    {obj.type==='cycling' &&
+                                                <li>
+                                                    <i className="fas fa-bicycle"></i>
+                                                    <br/> 
+                                                    <span>{obj.hobby}</span>
+                                                </li>
+    }                                                {obj.type==='football' &&
+                                                <li>
+                                                    <i className="fas fa-futbol"></i> 
+                                                    <br/> 
+                                                    <span>{obj.hobby}</span> 
+                                                </li>
+    }                                            {obj.type==='movies' &&
+                                                <li>
+                                                    <i className="fas fa-film"></i>
+                                                    <br/> 
+                                                    <span>{obj.hobby}</span>
+                                                </li>
+    }                                                {obj.type==='travel' &&
+                                                <li>
+                                                    <i className="fas fa-plane-departure"></i>
+                                                    <br/> 
+                                                    <span>{obj.hobby}</span>
+                                                </li>
+    }                                            {obj.type==='games' &&
+                                                <li>
+                                                    <i className="fas fa-gamepad"></i>
+                                                    <br/> 
+                                                    <span>{obj.hobby}</span>
+                                                </li>
+    }                                           {obj.type==='other' &&
+                                                <li>
+                                                    <i className="fas fa-exclamation"></i>
+                                                    <br/> 
+                                                    <span>{obj.hobby}</span>
+                                                </li>
+    }
+                                                </div>
+                                            ))}
+
+                                            
                                         </ul>
 
 
@@ -275,15 +311,18 @@ class ProfileComponent extends Component{
                                                     <i className="fa fa-edit"></i>Edit</a>
                                         </h4>
                                         <span>Language</span>&nbsp;&nbsp; <span
-                                           >Read</span>&nbsp;&nbsp; <span>Write</span>&nbsp;&nbsp;
+                                           >Read</span>&nbsp;&nbsp;&nbsp; <span>Write</span>&nbsp;&nbsp;
                                         <span>speak</span>
                                         <div className="lnguage row no-margin" id="languageFragment">
-                                            <div>
-                                                <span>English</span> --> &nbsp;<span
-                                                    >Yes</span> &nbsp;&nbsp;&nbsp;&nbsp;<span
-                                                    >No</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                <span>Yes</span> <br/>
+                                        {(this.state.output.languages || []).map(obj => (
+                                                <div>
+                                                <span>{obj.language}</span> --> &nbsp;<span
+                                                    >{obj.read}</span> &nbsp;&nbsp;&nbsp;&nbsp;<span
+                                                    >{obj.write}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <span>{obj.speak}</span> <br/>
                                             </div>
+                                        ))}
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -292,12 +331,12 @@ class ProfileComponent extends Component{
                                         <div className="hotkey">
                                             <h1 className="">
                                                 <span id="firstNameView"
-                                                    >Dipankar</span> <span
-                                                    id="lastNameView" >Dutta</span>
+                                                    >{this.state.output.firstName}</span> <span
+                                                    id="lastNameView" >{this.state.output.lastName}</span>
                                             </h1>
                                             <small><span style={{fontSize: "12px"}}
                                                 id="profileTitleView"
-                                                >Java Developer</span></small>
+                                                >{this.state.output.profileTitle}</span></small>
                                         </div>
                                         <h2 className="rit-titl">
                                             <i className="far fa-user"></i> Summary <a
@@ -307,7 +346,7 @@ class ProfileComponent extends Component{
                                         <div className="about">
                                             <p>
                                                 <span style={{fontSize: "12px"}} id="summaryView"
-                                                    >Summary</span>
+                                                    >{this.state.output.summary}</span>
                                             </p>
                                             <div className="btn-ro row no-margin">
                                                 <ul className="btn-link">
@@ -335,48 +374,51 @@ class ProfileComponent extends Component{
                                                     <span style={{fontSize: "12px"}}>Alias Name :</span>
                                                 </h4>
                                                 <span id="aliasNameView"
-                                                    >Dip</span>
+                                                    >{this.state.output.aliasName}</span>
                                             </div>
                                             <div className="col-xs-4 col-sm-4 col-lg-4">
                                                 <h4>
                                                     <span style={{fontSize: "12px"}}>Place Of Birth :</span>
                                                 </h4>
-                                                <span id="placeOfBirthView">Kolkata</span>
+                                                <span id="placeOfBirthView">{this.state.output.placeOfBirth}</span>
                                             </div>
                                             <div className="col-xs-4 col-sm-4 col-lg-4">
                                                 <h4>
                                                     <span style={{fontSize: "12px"}}>Marital Status :</span>
                                                 </h4>
                                                 <span id="maritalStatusView"
-                                                    >Married</span>
+                                                    >{this.state.output.maritalStatus}</span>
                                             </div>
                                             <div className="col-xs-4 col-sm-4 col-lg-4">
                                                 <h4>
                                                     <span style={{fontSize: "12px"}}>Birth Date :</span>
                                                 </h4>
                                                 <span id="birthDateView"
-                                                    >11/23/1987</span>
+                                                    >
+                                                     {Moment(this.state.output.birthDate).format('MM/DD/YYYY')}   
+                                                        
+                                                         </span>
                                             </div>
                                             <div className="col-xs-4 col-sm-4 col-lg-4">
                                                 <h4>
                                                     <span style={{fontSize: "12px"}}>Work Experience :</span>
                                                 </h4>
                                                 <span id="workExperienceView"
-                                                    >10</span>
+                                                    >{this.state.output.workExperience}</span>
                                             </div>
                                             <div className="col-xs-4 col-sm-4 col-lg-4">
                                                 <h4>
                                                     <span style={{fontSize: "12px"}}>Relevant Experience :</span>
                                                 </h4>
                                                 <span id="releventExperienceView"
-                                                    >10</span>
+                                                    >{this.state.output.releventExperience}</span>
                                             </div>
                                             <div className="col-xs-4 col-sm-4 col-lg-4">
                                                 <h4>
                                                     <span style={{fontSize: "12px"}}>HiringType :</span>
                                                 </h4>
                                                 <span id="hiringTypeView"
-                                                    >Fulltime</span>
+                                                    >{this.state.output.hiringType}</span>
 
                                             </div>
                                         </div>
@@ -390,25 +432,27 @@ class ProfileComponent extends Component{
                                             <div >
 
                                                 <div className="address">
+                                                {(this.state.output.addresses || []).map(obj => (
+                                                    
                                                     <div>
                                                         <div>
                                                             <h4>
-
-                                                                <span style={{fontSize: "12px"}}>INDIA</span>
+                                                                <span style={{fontSize: "12px"}}>{obj.country}</span>
                                                             </h4>
                                                         </div>
-                                                        <span style={{fontSize: "12px"}}>WB</span>,
-                                                        <span style={{fontSize: "12px"}}>Kolkata</span>
+                                                        <span style={{fontSize: "12px"}}>{obj.state}</span>,
+                                                        <span style={{fontSize: "12px"}}>{obj.city}</span>
                                                         <div>
                                                             <ul>
                                                                 <li><i class="far fa-hand-point-right"></i> 
-                                                                <span style={{fontSize: "12px"}}>A2/26 Kolkata</span>
+                                                                <span style={{fontSize: "12px"}}>{obj.addressLine}</span>
                                                                 </li>
 
                                                             </ul>
 
                                                         </div>
                                                     </div>
+                                                    ))}
                                                 </div>
                                             </div>
                                         </div>
@@ -423,20 +467,25 @@ class ProfileComponent extends Component{
                                                 <div>
                                                     <div>
                                                         <div className="work-exp">
+                                                        {(this.state.output.experienceEntries || []).map(obj => (
+                                                            <div>
                                                             <h4>
-                                                                <span>Java</span>
-                                                            </h4>
-                                                            <span><span
-                                                                >11/23/2000</span>-<span
-                                                               >11/23/2005</span></span>,
-                                                            <i><b><span>TCS</span>/ <span>IT</span></b></i>
+                                                            <span>{obj.title}</span>
+                                                        </h4>
+                                                        <span><span
+                                                            >{Moment(obj.startDate).format('MM/DD/YYYY')}</span>-<span
+                                                           >{Moment(obj.endDate).format('MM/DD/YYYY')}</span></span>,
+                                                        <i><b><span>{obj.company}</span>/ <span>{obj.industry}</span></b></i>
 
-                                                            <ul>
-                                                                <li><i className="far fa-hand-point-right"></i> <span
-                                                                    style={{fontSize: "12px"}} >IT Company</span>
-                                                                </li>
+                                                        <ul>
+                                                            <li><i className="far fa-hand-point-right"></i> <span
+                                                                style={{fontSize: "12px"}} >{obj.summary}</span>
+                                                            </li>
 
-                                                            </ul>
+                                                        </ul>
+                                                        </div>
+                                                        ))}
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -453,15 +502,18 @@ class ProfileComponent extends Component{
 
                                                 <div>
                                                     <div id="educationFragment" className="row no-margin">
-                                                        <div>
-                                                            <ul>
-                                                                <li className="col-md-6"><span>MCA</span> <br/> 
-                                                                <span>IT</span>-<span>IT School</span> <br/> 
-                                                                <span>11/23/2000</span>-<span>11/23/2005</span> <br/>
-                                                                </li>
-                                                            </ul>
+                                                    {(this.state.output.educationEntries || []).map(obj => (
+ <div>
+ <ul>
+     <li className="col-md-6"><span>{obj.degree}</span> <br/> 
+     <span>{obj.fieldOfStudy}</span>-<span>{obj.school}</span> <br/> 
+     <span>{Moment(obj.startDate).format('MM/DD/YYYY')}</span>-<span>{Moment(obj.startDate).format('MM/DD/YYYY')}</span> <br/>
+     </li>
+ </ul>
 
-                                                        </div>
+</div>
+                                                    ))}
+                                                       
                                                     </div>
                                                 </div>
                                             </div>
@@ -474,21 +526,24 @@ class ProfileComponent extends Component{
 
 
                                         <div className="profess-cover row no-margin" id="skillFragment">
-                                            <div className="col-md-6">
+                                        {(this.state.output.skils || []).map(obj => (
+                                                <div className="col-md-6">
                                                 <div className="row prog-row">
                                                     <div className="col-sm-6">
-                                                        <span>JAVA</span>
+                                                        <span>{obj.name}</span>
                                                     </div>
                                                     <div className="col-sm-6">
                                                         <div className="progress">
                                                             <div className="progress-bar" role="progressbar"
                                                                 style={{width: "90%" }}
-                                                                aria-valuenow="25" aria-valuemin="0"
+                                                                aria-valuenow={obj.proficientLevel} aria-valuemin="0"
                                                                 aria-valuemax="100"></div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                        ))}
+                                            
 
 
 
@@ -504,6 +559,15 @@ class ProfileComponent extends Component{
             </div>
 
         </div>
+
+
+        {/* Summary Modal */}
+        <SummaryModelComponent preloadValues={this.state.output} />
+
+
+
+
+
          
         </div>
         )

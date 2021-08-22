@@ -13,7 +13,7 @@ import intello from './images/intello_logo.png'
 import './App.css';
 
 import HeaderComponent from './component/HeaderComponent';
-import ProfileComponent from './component/ProfileComponent';
+import ProfileComponentNew from './component/ProfileComponentNew';
 import SearchComponent from './component/SearchComponent';
 import HomeComponent from './component/HomeComponent';
 
@@ -145,7 +145,7 @@ class App extends Component {
                               )
                           }}
                         />
-                        <Route exact path="/profile" component={ProfileComponent} />
+                        <Route exact path="/profile" component={ProfileComponentNew} />
                         <Route exact path="/search" component={SearchComponent} />
                         <Route exact path="/home" component={HomeComponent} />
                        
