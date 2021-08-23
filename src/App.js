@@ -68,8 +68,9 @@ class App extends Component {
   
 
   onSuccess = response => {
-
+    
     localStorage.setItem('token',response.access_token);
+    localStorage.setItem('email',response.email);
 
     const config = {
       baseURL: 'http://localhost:9999/',

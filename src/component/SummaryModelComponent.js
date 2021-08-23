@@ -1,12 +1,43 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
+import App,{ updateAppState } from '../App';
       
-export function SummaryModelComponent({preloadValues}) {
+export function SummaryModelComponent({data,changeLoader,changeCandidate}) {
+
 
     const { register, handleSubmit,  formState: { errors }  } = useForm({
-        defaultValues: preloadValues
+        defaultValues: data
       });
-  const onSubmit = data => console.log(data);
+
+
+      const onSummarySubmit = data =>{
+        changeLoader(true);
+
+        const configClient = {
+          baseURL: 'http://localhost:9000/',
+          headers: {
+          "Access-Control-Allow-Origin": "*",
+          'Authorization' : 'Bearer ' +  localStorage.getItem('token')
+          
+          }
+      };
+
+      const instanceClient = axios.create(configClient);
+
+      instanceClient.put('resource/candidate/update',data)
+          .then( res => {
+            changeCandidate(data);
+            //reset(res.data.output);
+            changeLoader(false);
+          
+          }, err => {
+            updateAppState({ authenticated: false})
+            console.log("erroe1");
+          });
+
+
+    }
       
     
       
@@ -42,34 +73,37 @@ export function SummaryModelComponent({preloadValues}) {
                         href="#" class="alert-link">next shoelace</a>.
                 </div>
 
-                <form id="summary-form" onSubmit={handleSubmit(onSubmit)}>
+                <form id="summary-form" onSubmit={handleSubmit(onSummarySubmit)}>
                     <div class="form-group">
                         <label for="firstName">First Name(*)</label> <input
                             class="form-control" id="firstName"
-                            {...register("firstName", { required: true, maxLength: 20 })}
+                            {...register("firstName", { required: "First Name is required", maxLength: 20 })}
                             placeholder="Enter First Name" />
+                         <p style={{color : "red"}}>{errors.firstName && errors.firstName.message}</p>
                         
                     </div>
                     <div class="form-group">
                         <label for="lastName">Last Name(*)</label> <input
-                        {...register("lastName", { required: true, maxLength: 20 })}
+                        {...register("lastName", { required: "Last Name is required", maxLength: 20 })}
                             class="form-control" id="lastName"
                             placeholder="Enter Last Name" />
+                         <p style={{color : "red"}}>{errors.lastName && errors.lastName.message}</p>
                         
                     </div>
                     <div class="form-group">
                         <label for="profileTitle">Profile Title(*)</label> <input
                             class="form-control"
-                            {...register("profileTitle", { required: true, maxLength: 20 })}
+                            {...register("profileTitle", { required: "profile Title is required", maxLength: 20 })}
                             id="profileTitle"
                             placeholder="Enter Profile Title" />
-                           
+                            <p style={{color : "red"}}>{errors.profileTitle && errors.profileTitle.message}</p>
                     </div>
                     <div class="form-group">
                         <label for="summary">Summary(*)</label>
                         <textarea class="form-control" rows="5" id="summary"
-                         {...register("summary", { required: true, maxLength: 100 })}
+                         {...register("summary", { required: "Summary is required", maxLength: 100 })}
                             ></textarea>
+                         <p style={{color : "red"}}>{errors.summary && errors.summary.message}</p>
                            
                     </div>
 
@@ -94,8 +128,7 @@ export function SummaryModelComponent({preloadValues}) {
         </div>
 
     </div>
-
-</div>
+    </div>
                 
   );
 }

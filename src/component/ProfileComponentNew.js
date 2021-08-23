@@ -1,11 +1,12 @@
-import React, { useState,useEffect  } from 'react';
+import React, { useState,useEffect,useCallback  } from 'react';
 import avatar from '../images/avatar.png';
 import axios from 'axios';
 import Moment from 'moment';
 import App,{ updateAppState } from '../App';
 import { SummaryModelComponent } from './SummaryModelComponent';
-import { useForm } from 'react-hook-form';
+import { useForm ,useFieldArray } from 'react-hook-form';
 import Spinner from './Spinner';
+import { AddressModelComponent } from './AddressModelComponent';
 
 function ProfileComponentNew(){
 
@@ -52,37 +53,26 @@ function ProfileComponentNew(){
             "jobLocations": []
         });
 
-        const { register, handleSubmit,  formState: { errors },reset  } = useForm({ 
+        const { register, control,handleSubmit,  formState: { errors },reset ,watch } = useForm({ 
             defaultValues : candidate
           });
-      const onSummarySubmit = data =>{
-          //alert(JSON.stringify(data));
-          setLoader(true);
 
-          const configClient = {
-            baseURL: 'http://localhost:9000/',
-            headers: {
-            "Access-Control-Allow-Origin": "*",
-            'Authorization' : 'Bearer ' +  localStorage.getItem('token')
-            
-            }
-        };
-  
-        const instanceClient = axios.create(configClient);
+          
+          const changeLoader = useCallback((data) => {
+              setLoader(data);
+            },
+            [], 
+          );
 
-        instanceClient.put('resource/candidate/update',data)
-            .then( res => {
-              setCandidate(data);
-              //reset(res.data.output);
-              setLoader(false);
-            
-            }, err => {
-              updateAppState({ authenticated: false})
-              console.log("erroe1");
-            });
+          const changeCandidate = useCallback((data) => {
+            setCandidate(data);
+          },
+          [], 
+        );
+          
 
-
-      } 
+          
+       
 
 
     useEffect(() => {
@@ -583,94 +573,13 @@ function ProfileComponentNew(){
 
 
    
-    <div class="modal fade" id="summary" tabindex="-1" role="dialog"
-    aria-labelledby="myModalLabel" aria-hidden="true"
-    data-keyboard="false" data-backdrop="static">
-
-    <div class="modal-dialog">
-
-        <div class="modal-content">
-
-            {/* Modal Header */}
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">
-                    <span aria-hidden="true">&times;</span> <span class="sr-only">Close</span>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">
-                    <i class="far fa-user"></i> Summary
-                </h4>
-            </div>
-
-            {/* Modal Body  */}
-            <div class="modal-body">
-
-                <div class="alert alert-success alert-dismissible" role="alert"
-                    style={{display: 'none'}}>
-                    <button type="button" class="close" data-dismiss="alert"
-                        aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <strong>Congratulations!</strong> Now you're ready to do the <a
-                        href="#" class="alert-link">next shoelace</a>.
-                </div>
-
-                <form id="summary-form" onSubmit={handleSubmit(onSummarySubmit)}>
-                    <div class="form-group">
-                        <label for="firstName">First Name(*)</label> <input
-                            class="form-control" id="firstName"
-                            {...register("firstName", { required: "First Name is required", maxLength: 20 })}
-                            placeholder="Enter First Name" />
-                         <p style={{color : "red"}}>{errors.firstName && errors.firstName.message}</p>
-                        
-                    </div>
-                    <div class="form-group">
-                        <label for="lastName">Last Name(*)</label> <input
-                        {...register("lastName", { required: "Last Name is required", maxLength: 20 })}
-                            class="form-control" id="lastName"
-                            placeholder="Enter Last Name" />
-                         <p style={{color : "red"}}>{errors.lastName && errors.lastName.message}</p>
-                        
-                    </div>
-                    <div class="form-group">
-                        <label for="profileTitle">Profile Title(*)</label> <input
-                            class="form-control"
-                            {...register("profileTitle", { required: "profile Title is required", maxLength: 20 })}
-                            id="profileTitle"
-                            placeholder="Enter Profile Title" />
-                            <p style={{color : "red"}}>{errors.profileTitle && errors.profileTitle.message}</p>
-                    </div>
-                    <div class="form-group">
-                        <label for="summary">Summary(*)</label>
-                        <textarea class="form-control" rows="5" id="summary"
-                         {...register("summary", { required: "Summary is required", maxLength: 100 })}
-                            ></textarea>
-                         <p style={{color : "red"}}>{errors.summary && errors.summary.message}</p>
-                           
-                    </div>
-
-                    <button type="submit" class="btn btn-primary" >Save
-                        changes</button>
-
-                </form>
+    <SummaryModelComponent data={candidate} changeLoader={changeLoader} changeCandidate={changeCandidate}/>
 
 
 
-
-            </div>
-
-            {/* Modal Footer  */}
-            <div class="modal-footer">
-
-                <button type="button" class="btn btn-default" data-dismiss="modal">
-                    Close</button>
-
-            </div>
-
-        </div>
-
-    </div>
-    </div>
- 
+     {/* address Modal */}
+	<AddressModelComponent data={candidate} changeLoader={changeLoader} changeCandidate={changeCandidate}/>
+    
 
      
     </div>
