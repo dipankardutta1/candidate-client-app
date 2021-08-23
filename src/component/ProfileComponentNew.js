@@ -7,6 +7,7 @@ import { SummaryModelComponent } from './SummaryModelComponent';
 import { useForm ,useFieldArray } from 'react-hook-form';
 import Spinner from './Spinner';
 import { AddressModelComponent } from './AddressModelComponent';
+import { SkillModelComponent } from './SkillModelComponent';
 
 function ProfileComponentNew(){
 
@@ -546,7 +547,7 @@ function ProfileComponentNew(){
                                                 <div className="col-sm-6">
                                                     <div className="progress">
                                                         <div className="progress-bar" role="progressbar"
-                                                            style={{width: "90%" }}
+                                                            style={{width: obj.proficientLevel+'%' }}
                                                             aria-valuenow={obj.proficientLevel} aria-valuemin="0"
                                                             aria-valuemax="100"></div>
                                                     </div>
@@ -579,6 +580,8 @@ function ProfileComponentNew(){
 
      {/* address Modal */}
 	<AddressModelComponent data={candidate} changeLoader={changeLoader} changeCandidate={changeCandidate}/>
+
+    <SkillModelComponent data={candidate} changeLoader={changeLoader} changeCandidate={changeCandidate}/>
     
 
      
