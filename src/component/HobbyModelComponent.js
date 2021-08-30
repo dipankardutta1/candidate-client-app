@@ -3,7 +3,7 @@ import axios from 'axios';
 import App,{ updateAppState } from '../App';
 
 
-export function SkillModelComponent({data,changeLoader,changeCandidate}) {
+export function HobbyModelComponent({data,changeLoader,changeCandidate}) {
 
 
     
@@ -13,17 +13,17 @@ export function SkillModelComponent({data,changeLoader,changeCandidate}) {
 
     const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
         control,
-        name: "skils"
+        name: "hobbies"
       });
 
 
       
-      // for Skills
+      // for socialProfiles
 
-     const onSkillSubmit= data => {
+     const onHobbiesSubmit= data => {
        
 
-        (data.skils || []).map((item, index) => (
+        (data.hobbies || []).map((item, index) => (
             item.candidateId = localStorage.getItem('email')
         ));
         
@@ -40,7 +40,7 @@ export function SkillModelComponent({data,changeLoader,changeCandidate}) {
 
       const instanceClient = axios.create(configClient);
 
-      instanceClient.post('resource/skills/saveMultiple',data.skils)
+      instanceClient.post('resource/hobby/saveMultiple',data.hobbies)
           .then( res => {
             changeCandidate(data);
             //reset(res.data.output);
@@ -54,11 +54,11 @@ export function SkillModelComponent({data,changeLoader,changeCandidate}) {
           
 
     }
-   // skills end
+   // hobbies end
 
 
     return (
-        <div class="modal fade" id="skillModel" tabindex="-1" role="dialog"
+        <div class="modal fade" id="hobbiesModel" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true"
 		data-keyboard="false" data-backdrop="static">
 		<div class="modal-dialog">
@@ -70,36 +70,63 @@ export function SkillModelComponent({data,changeLoader,changeCandidate}) {
 						<span aria-hidden="true">&times;</span> <span class="sr-only">Close</span>
 					</button>
 					<h4 class="modal-title" id="myModalLabel">
-						<i class="far fa-user"></i> Skill
+						<i class="far fa-user"></i> Hobbies
 					</h4>
 				</div>
 
 				{/* Modal Body */}
 				<div class="modal-body">
-					<form id="skill-form" onSubmit={handleSubmit(onSkillSubmit)}>
+					<form id="skill-form" onSubmit={handleSubmit(onHobbiesSubmit)}>
 						<table id="skillTable" class=" table order-list">
 							<thead>
 								<tr>
-									<td>Skill Name</td>
-									<td>Proficient Level</td>
+									<td>Type</td>
+									<td>Hobby</td>
 								</tr>
 							</thead>
 							<tbody>
                             {(fields || []).map((field, index) => (
 								<tr>
-									<td class="col-sm-8">
+									<td class="col-sm-6">
+                                        <select  
+										key={field.id} 
+										class="form-control type"  {...register(`hobbies.${index}.type`,{ required: "Hobby Type is required"})}
+										>
+	    <option
+          key={field.type=='writing'}
+          value={'writing'}>  Writing </option>
+       <option
+          key={field.type=='cycling'}
+          value={'cycling'}>  Cycling </option>
+		  <option
+          key={field.type=='football'}
+          value={'football'}>  Football </option>
+		  <option
+          key={field.type=='movies'}
+          value={'movies'}>  Movies </option>
+           <option
+          key={field.type=='games'}
+          value={'games'}>  Games </option>
+           <option
+          key={field.type=='movies'}
+          value={'movies'}>  Movies </option>
+ <option
+          key={field.type=='other'}
+          value={'other'}>  Other </option>
+										
+										</select>
+                                        <p style={{color : "red"}}>{errors.hobbies?.[index]?.type?.message}</p>
+
+                                        </td>
+
+
+									<td class="col-sm-6">
                                         <input type="text"
-										 key={field.id} 
-                                         class="form-control name"
-                                        {...register(`skils.${index}.name`, { required: "Skill is required", maxLength: 50 })}/>
-                                        <p style={{color : "red"}}>{errors.skils?.[index]?.name?.message}</p></td>
-									<td class="col-sm-3">
-                                        <input type="number"
                                          key={field.id} 
-                                         {...register(`skils.${index}.proficientLevel`, { required: "Proficient Level is required",  min:{value:1,message:"Minimum value is 1"} , max: {value:100,message:"Maximum value is 100"}  })}
-										class="form-control proficientLevel"
+                                         {...register(`hobbies.${index}.hobby`, { required: "Hobby is required"})}
+										class="form-control url"
 										 />
-                                         <p style={{color : "red"}}>{errors.skils?.[index]?.proficientLevel?.message}</p></td>
+                                         <p style={{color : "red"}}>{errors.hobbies?.[index]?.hobby?.message}</p></td>
 
 
                                         <td class="col-sm-1"> {index == 0? <a class="deleteRow"></a>  : <input 
@@ -113,15 +140,15 @@ export function SkillModelComponent({data,changeLoader,changeCandidate}) {
 							<tfoot>
 								<tr>
 									<td colspan="12" style={{textAlign: 'left'}}><input
-										type="button" class="btn btn-lg btn-block " id="addrowSkill"
-										value="Add Row" onClick={() => append({"id":"","name":"","state":"","isDeleted":false,"proficientLevel":""})}/></td>
+										type="button" class="btn btn-lg btn-block " id="addrowHobbyProfile"
+										value="Add Row" onClick={() => append({"id":"","type":"","hobby":"","isDeleted":false})}/></td>
 								</tr>
 								<tr>
 								</tr>
 							</tfoot>
 						</table>
                         {fields && fields.length? (
-						<button type="submit" class="btn btn-primary" id="skillBtn">Save
+						<button type="submit" class="btn btn-primary" id="hobbyBtn">Save
 							changes</button>
                         ): ""}
 					</form>

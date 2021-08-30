@@ -3,7 +3,7 @@ import axios from 'axios';
 import App,{ updateAppState } from '../App';
 
 
-export function SkillModelComponent({data,changeLoader,changeCandidate}) {
+export function SocialProfileModelComponent({data,changeLoader,changeCandidate}) {
 
 
     
@@ -13,17 +13,17 @@ export function SkillModelComponent({data,changeLoader,changeCandidate}) {
 
     const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
         control,
-        name: "skils"
+        name: "socialProfiles"
       });
 
 
       
-      // for Skills
+      // for socialProfiles
 
-     const onSkillSubmit= data => {
+     const onSocialProfilesSubmit= data => {
        
 
-        (data.skils || []).map((item, index) => (
+        (data.socialProfiles || []).map((item, index) => (
             item.candidateId = localStorage.getItem('email')
         ));
         
@@ -40,7 +40,7 @@ export function SkillModelComponent({data,changeLoader,changeCandidate}) {
 
       const instanceClient = axios.create(configClient);
 
-      instanceClient.post('resource/skills/saveMultiple',data.skils)
+      instanceClient.post('resource/socialProfile/saveMultiple',data.socialProfiles)
           .then( res => {
             changeCandidate(data);
             //reset(res.data.output);
@@ -54,11 +54,11 @@ export function SkillModelComponent({data,changeLoader,changeCandidate}) {
           
 
     }
-   // skills end
+   // socialProfiles end
 
 
     return (
-        <div class="modal fade" id="skillModel" tabindex="-1" role="dialog"
+        <div class="modal fade" id="socialProfileModel" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true"
 		data-keyboard="false" data-backdrop="static">
 		<div class="modal-dialog">
@@ -70,36 +70,56 @@ export function SkillModelComponent({data,changeLoader,changeCandidate}) {
 						<span aria-hidden="true">&times;</span> <span class="sr-only">Close</span>
 					</button>
 					<h4 class="modal-title" id="myModalLabel">
-						<i class="far fa-user"></i> Skill
+						<i class="far fa-user"></i> Social Profiles
 					</h4>
 				</div>
 
 				{/* Modal Body */}
 				<div class="modal-body">
-					<form id="skill-form" onSubmit={handleSubmit(onSkillSubmit)}>
+					<form id="skill-form" onSubmit={handleSubmit(onSocialProfilesSubmit)}>
 						<table id="skillTable" class=" table order-list">
 							<thead>
 								<tr>
-									<td>Skill Name</td>
-									<td>Proficient Level</td>
+									<td>Type</td>
+									<td>Url</td>
 								</tr>
 							</thead>
 							<tbody>
                             {(fields || []).map((field, index) => (
 								<tr>
-									<td class="col-sm-8">
+									<td class="col-sm-6">
+                                        <select  
+										key={field.id} 
+										class="form-control type"  {...register(`socialProfiles.${index}.type`,{ required: "Social Profile Type is required"})}
+										>
+	    <option
+          key={field.type=='facebook'}
+          value={'facebook'}>  FaceBook </option>
+       <option
+          key={field.type=='twitter'}
+          value={'twitter'}>  Twitter </option>
+		  <option
+          key={field.type=='linkedin'}
+          value={'linkedin'}>  Linkedin </option>
+		  <option
+          key={field.type=='github'}
+          value={'github'}>  Github </option>
+ <option
+          key={field.type=='other'}
+          value={'other'}>  Other </option>
+										
+										</select>
+                    <p style={{color : "red"}}>{errors.socialProfiles?.[index]?.type?.message}</p>  
+                                        </td>
+
+
+									<td class="col-sm-6">
                                         <input type="text"
-										 key={field.id} 
-                                         class="form-control name"
-                                        {...register(`skils.${index}.name`, { required: "Skill is required", maxLength: 50 })}/>
-                                        <p style={{color : "red"}}>{errors.skils?.[index]?.name?.message}</p></td>
-									<td class="col-sm-3">
-                                        <input type="number"
                                          key={field.id} 
-                                         {...register(`skils.${index}.proficientLevel`, { required: "Proficient Level is required",  min:{value:1,message:"Minimum value is 1"} , max: {value:100,message:"Maximum value is 100"}  })}
-										class="form-control proficientLevel"
+                                         {...register(`socialProfiles.${index}.url`, { required: "Url is required"})}
+										class="form-control url"
 										 />
-                                         <p style={{color : "red"}}>{errors.skils?.[index]?.proficientLevel?.message}</p></td>
+                                         <p style={{color : "red"}}>{errors.socialProfiles?.[index]?.url?.message}</p></td>
 
 
                                         <td class="col-sm-1"> {index == 0? <a class="deleteRow"></a>  : <input 
@@ -113,15 +133,15 @@ export function SkillModelComponent({data,changeLoader,changeCandidate}) {
 							<tfoot>
 								<tr>
 									<td colspan="12" style={{textAlign: 'left'}}><input
-										type="button" class="btn btn-lg btn-block " id="addrowSkill"
-										value="Add Row" onClick={() => append({"id":"","name":"","state":"","isDeleted":false,"proficientLevel":""})}/></td>
+										type="button" class="btn btn-lg btn-block " id="addrowSocialProfile"
+										value="Add Row" onClick={() => append({"id":"","type":"","userName":"","isDeleted":false,"url":""})}/></td>
 								</tr>
 								<tr>
 								</tr>
 							</tfoot>
 						</table>
                         {fields && fields.length? (
-						<button type="submit" class="btn btn-primary" id="skillBtn">Save
+						<button type="submit" class="btn btn-primary" id="socialProfileBtn">Save
 							changes</button>
                         ): ""}
 					</form>

@@ -8,6 +8,13 @@ import { useForm ,useFieldArray } from 'react-hook-form';
 import Spinner from './Spinner';
 import { AddressModelComponent } from './AddressModelComponent';
 import { SkillModelComponent } from './SkillModelComponent';
+import {MobileModelComponent} from './MobileModelComponent';
+import {SocialProfileModelComponent} from './SocialProfileModelComponent';
+import {HobbyModelComponent} from './HobbyModelComponent';
+import {LanguageModelComponent} from './LanguageModelComponent';
+import {ProfileModelComponent} from './ProfileModelComponent';
+import {WorkExpModelComponent} from './WorkExpModelComponent';
+//import {AvatarModelComponent} from './AvatarModelComponent';
 
 function ProfileComponentNew(){
 
@@ -37,6 +44,7 @@ function ProfileComponentNew(){
             "summary": "NA",
             "placeOfBirth": "NA",
             "maritalStatus": "",
+
             "addresses": [],
             "isAvatarUploaded": null,
             "isResumeUploaded": null,
@@ -174,7 +182,7 @@ function ProfileComponentNew(){
 
                                     <h4 class="ltitle">
                                         Contact <a
-                                            data-toggle="modal" data-target="#contactModel" href="#"
+                                            data-toggle="modal" data-target="#mobileModel" href="#"
                                             style={{ float: "right" , color: "white"}}><i
                                             className="fa fa-edit"></i>Edit</a>
                                     </h4>
@@ -210,7 +218,7 @@ function ProfileComponentNew(){
 
                                     <h4 class="ltitle">
                                         Social Profile <a
-                                            data-toggle="modal" data-target="#socialModel" href="#"
+                                            data-toggle="modal" data-target="#socialProfileModel" href="#"
                                             style={{ float: "right", color: "white" }}><i
                                             className="fa fa-edit"></i>Edit</a>
 
@@ -257,7 +265,7 @@ function ProfileComponentNew(){
 
                                     <h4 className="ltitle">
                                         Hobbies <a 
-                                            data-toggle="modal" data-target="#hobbyModel" href="#"
+                                            data-toggle="modal" data-target="#hobbiesModel" href="#"
                                             style={{float: "right" , color: "white"}}>
                                                 <i className="fa fa-edit"></i>Edit</a>
                                         </h4>
@@ -319,7 +327,7 @@ function ProfileComponentNew(){
 
                                     <h4 className="ltitle">
                                         Languages <a 
-                                            data-toggle="modal" data-target="#languageModel" href="#"
+                                            data-toggle="modal" data-target="#languagesModel" href="#"
                                             style={{float: "right" , color: "white"}}>
                                                 <i className="fa fa-edit"></i>Edit</a>
                                     </h4>
@@ -377,7 +385,7 @@ function ProfileComponentNew(){
                                     <h2 className="rit-titl">
                                         <i className="far fa-user"></i> Profile <a
                                             
-                                            data-toggle="modal" data-target="#profile" href="#"
+                                            data-toggle="modal" data-target="#profileModel" href="#"
                                             style={{float: "right"}}><i className="fa fa-edit"></i>Edit</a>
 
                                     </h2>
@@ -471,7 +479,7 @@ function ProfileComponentNew(){
                                     <h2 className="rit-titl">
                                         <i className="fa fa-home fa-fw"></i> workExp <a
                                             
-                                            data-toggle="modal" data-target="#workExpModel" href="#"
+                                            data-toggle="modal" data-target="#experienceEntriesModel" href="#"
                                             style={{float: "right"}}><i className="fa fa-edit"></i>Edit</a>
                                     </h2>
                                     <div id="workExpFragment">
@@ -582,9 +590,20 @@ function ProfileComponentNew(){
 	<AddressModelComponent data={candidate} changeLoader={changeLoader} changeCandidate={changeCandidate}/>
 
     <SkillModelComponent data={candidate} changeLoader={changeLoader} changeCandidate={changeCandidate}/>
+   
+    <MobileModelComponent data={candidate} changeLoader={changeLoader} changeCandidate={changeCandidate}/>
+    
+    <SocialProfileModelComponent data={candidate} changeLoader={changeLoader} changeCandidate={changeCandidate}/>
+    <HobbyModelComponent data={candidate} changeLoader={changeLoader} changeCandidate={changeCandidate}/>
+    
+    <LanguageModelComponent data={candidate} changeLoader={changeLoader} changeCandidate={changeCandidate}/>
+    
+    <ProfileModelComponent data={candidate} changeLoader={changeLoader} changeCandidate={changeCandidate}/>
+    <WorkExpModelComponent data={candidate} changeLoader={changeLoader} changeCandidate={changeCandidate}/>
+    
     
 
-     
+
     </div>
     );
     }
