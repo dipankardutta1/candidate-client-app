@@ -164,8 +164,17 @@ function ProfileComponentNew(){
 
 
 
-
-                                        <img src={avatar} alt="" className="image" id="avatarImage"></img> 
+                                        {candidate.isAvatarUploaded == null || candidate.isAvatarUploaded == false ?
+                                        (
+                                            <img src={avatar} alt="" className="image" id="avatarImage"></img>
+                                        ) : (candidate.documents || []).map(obj =>
+                                                obj.type == 'avatar' ? (
+                                                    <img src={'data:image/jpg;base64,' + obj.image} alt="" className="image" id="avatarImage"></img>
+                                                ) :("")
+                                                    
+                                                
+                                        )}
+                                         
                                         
                                         <div className="middle">
                                             <a data-toggle="modal" data-target="#avatarModel" href="#"
