@@ -2,7 +2,7 @@ import  { useState } from 'react';
 import { Controller,useForm ,useFieldArray } from 'react-hook-form';
 import axios from 'axios';
 import App,{ updateAppState } from '../App';
-import DatePicker from "react-datepicker";
+import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 
@@ -18,61 +18,12 @@ export function WorkExpModelComponent({data,changeLoader,changeCandidate}) {
         control,
         name: "experienceEntries"
       });
-
-
-    const [startDates, setStartDates] = useState([]);
     
      
-      // for experienceEntries
-     /*
-        for(var i=0;i<data.experienceEntries.length;i++){
-     var month = (new Date(data.experienceEntries[i].startDate).getMonth() + 1);
-    var day = (new Date(data.experienceEntries[i].startDate).getDate());
-    var year = (new Date(data.experienceEntries[i].startDate).getFullYear());
-    var dt=month + "/"+ day +"/" + year;
-          
-            startDates[i]=new Date(dt);
-           
-        }
-        */
-        function rcvStartDate(stDate1,index){
-         
-            
-           data.experienceEntries[index].startDate=new Date(stDate1);
-           startDates[index]=stDate1;
-           var newAr=[];
-            for(var j=0;j<startDates.length;j++){
-                newAr.push(startDates[j]);
-            }
-
-            setStartDates([...newAr,startDates.length]);
-        } 
-
-        
-
-        const [endDates, setEndDates] = useState([]);
-      /*
-        for(var i=0;i<data.experienceEntries.length;i++){
-    var month = (new Date(data.experienceEntries[i].endDate).getMonth() + 1);
-    var day = (new Date(data.experienceEntries[i].endDate).getDate());
-    var year = (new Date(data.experienceEntries[i].endDate).getFullYear());
-    var dt=month + "/"+ day +"/" + year;
-            endDates[i]=new Date(dt);
-        }
-
-        */
-        function rcvEndDate(endDate1,index){
-
-            data.experienceEntries[index].endDate=endDate1;
-            endDates[index]=endDate1;
-            var newAr=[];
-             for(var j=0;j<endDates.length;j++){
-                 newAr.push(endDates[j]);
-             }
+   
  
-             setEndDates([...newAr,endDates.length]);
-         
-        }
+      
+        
 
      const onExperienceEntriesSubmit= data => {
        
@@ -80,10 +31,10 @@ export function WorkExpModelComponent({data,changeLoader,changeCandidate}) {
             item.candidateId = localStorage.getItem('email')
         ));
 
-        //alert(JSON.stringify(data.addresses));
+        //alert(JSON.stringify(data.experienceEntries));
         
         changeLoader(true);
-
+        
         const configClient = {
           baseURL: 'http://localhost:9000/',
           headers: {
@@ -158,26 +109,75 @@ export function WorkExpModelComponent({data,changeLoader,changeCandidate}) {
                                             
                                                 <td class="col-sm-1">
                                                 
-            
-                                                    < DatePicker  key={field.id}  {...register(`experienceEntries.${index}.startDate`, { required: "startDate is required"})}
+                                                <Controller
+                                                    
+                                                    control={control}
+                                                    name={`experienceEntries.${index}.startDate`}
+                                                    rules={{ required: "Start Date is required" }} 
+                                                    render={({ field: { onChange, onBlur, value, ref } }) => (
+                                                    <ReactDatePicker
+                                                        onChange={onChange}
+                                                        onBlur={onBlur}
+                                                        selected={value != null ? moment(value).toDate() : ""}
+                                                        dateFormat={"MM/dd/yyyy"}
+                                                        showYearDropdown
+                                                        showMonthDropdown
+                                                        maxDate={new Date()}
+                                                        minDate={new Date(1900, 1, 1)}
+                                                        className="form-control"
+                                                        key={field.id}
+                                                    />
+                                                    )}
+                                                />
+                                                    
+                                                    
+                                                    {/* 
+                                                    < ReactDatePicker  key={field.id}  {...register(`experienceEntries.${index}.startDate`, { required: "startDate is required"})}
                                                     selected={startDates[index]}
                                                     onChange={date=>rcvStartDate(date,index)} 
                                                     maxDate={new Date()}
                                                     dateFormat="MM/dd/yyyy"
                                                     
                                                  />
-                                              
+                                                */}
                                                 <p style={{color : "red"}}>{errors.experienceEntries?.[index]?.startDate?.message}</p>
                                                 </td>
 
                                                 <td class="col-sm-1">
-                                                   
-                                                   < DatePicker  key={field.id} {...register(`experienceEntries.${index}.endDate`, { required: "endDate is required"})}
+
+                                                    
+                                                    <Controller
+                                                        
+                                                        control={control}
+                                                        name={`experienceEntries.${index}.endDate`}
+                                                        rules={{ required: "End Date is required" }} 
+                                                        render={({ field: { onChange, onBlur, value, ref } }) => (
+                                                        <ReactDatePicker
+                                                            onChange={onChange}
+                                                            onBlur={onBlur}
+                                                            selected={value != null ? moment(value).toDate() : ""}//{value != null ? moment(value).toDate() : ""}
+                                                            dateFormat={"MM/dd/yyyy"}
+                                                            showYearDropdown
+                                                            showMonthDropdown
+                                                            maxDate={new Date()}
+                                                            minDate={new Date(1900, 1, 1)}
+                                                            className="form-control"
+                                                            key={field.id}
+                                                            
+                                                        />
+                                                        )}
+                                                    />
+                                                    
+
+                                                    {/*
+                                                   < ReactDatePicker  key={field.id} {...register(`experienceEntries.${index}.endDate`, { required: "endDate is required"})}
                                                     selected={endDates[index]}
                                                    onChange={date=>rcvEndDate(date,index)} 
                                                    minDate={new Date(field.startDate)}
                                                      dateFormat="MM/dd/yyyy"
-                                                 />
+                                                 /> 
+
+                                                 */}
                                                    <p style={{color : "red"}}>{errors.experienceEntries?.[index]?.endDate?.message}</p></td>
    
                                                    <td class="col-sm-1"><input type="text"
@@ -193,21 +193,17 @@ export function WorkExpModelComponent({data,changeLoader,changeCandidate}) {
                                                 <p style={{color : "red"}}>{errors.experienceEntries?.[index]?.industry?.message}</p></td>
                  
                                                 <td class="col-sm-1">
-                                                < select  key={field.id} class="form-control type"   {...register(`experienceEntries.${index}.isCurrent`, { required: "Yes OR No is required"})}>
-                                                <option
-                                                  key={'${isCurrent'=='true}'}
-                                                  value={'true'}>  Yes </option>
-                                               <option
-                                                  key={'isCurrent'=='false}'}
-                                                  value={'false'}> No </option>
-                                                        </select>
+                                                < select  key={field.id} class="form-control type"   {...register(`experienceEntries.${index}.isCurrent`)}>
+                                                    <option value='true'>  Yes </option>
+                                                    <option value='false'> No </option>
+                                                </select>
                                                 <p style={{color : "red"}}>{errors.experienceEntries?.[index]?.isCurrent?.message}</p>
                                                 </td>
                                           
-                                                <td class="col-sm-1"><input type="text"
+                                                <td class="col-sm-1"><input type="number"
                                                 class="form-control noticePeriod"
                                                 key={field.id}
-                                                {...register(`experienceEntries.${index}.noticePeriod`, { required: "Notice Period is required"})}/>
+                                                {...register(`experienceEntries.${index}.noticePeriod`, { required: "Notice Period is required", min:{value:0,message:"Range sholld be from 0 to 365"},max:{value:365,message:"Range sholld be from 0 to 365"}})}/>
                                                 <p style={{color : "red"}}>{errors.experienceEntries?.[index]?.noticePeriod?.message}</p></td>
 
                                           
@@ -231,8 +227,8 @@ export function WorkExpModelComponent({data,changeLoader,changeCandidate}) {
                                         <tr>
                                             <td colspan="8" style={{textAlign : 'left'}}><input
                                                 type="button" class="btn btn-lg btn-block " id="addRowWorkExp"
-                                                value="Add Row" onClick={() => append({"id":"","title":"","summary":"","isDeleted":false,"startDate":"","endDate":"",
-                                                "company":"","industry":"","isCurrent":"","noticePeriod":""})}/></td>
+                                                value="Add Row" onClick={() => append({"id":"","title":"","summary":"","isDeleted":false,"startDate":null,"endDate":null,
+                                                "company":"","industry":"","isCurrent":false,"noticePeriod":""})}/></td>
                                         </tr>
                                         <tr>
                                         </tr>

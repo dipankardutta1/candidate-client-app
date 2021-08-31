@@ -126,6 +126,7 @@ export function ProfileModelComponent({data,changeLoader,changeCandidate}) {
                                     showMonthDropdown
                                     maxDate={new Date()}
                                     minDate={new Date(1900, 1, 1)}
+                                    className="form-control"
                                 />
                                 )}
                             />
