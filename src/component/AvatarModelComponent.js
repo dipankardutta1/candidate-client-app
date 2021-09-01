@@ -16,13 +16,85 @@ export function AvatarModelComponent({data,changeLoader,changeCandidate}) {
       
       // for addresses
 
-     const onAvatarSubmit= data => {
+     const onAvatarSubmit= d => {
        
 
         
-        alert(JSON.stringify(data));
+        console.log(d.email);
+		console.log(d.avatarUpload);
         
        
+		changeLoader(true);
+
+        const configClient = {
+          baseURL: 'http://localhost:9000/',
+          headers: {
+          "Access-Control-Allow-Origin": "*",
+		  'content-type': 'multipart/form-data',
+          'Authorization' : 'Bearer ' +  localStorage.getItem('token')
+          
+          }
+      };
+
+      const instanceClient = axios.create(configClient);
+
+	  	const formData = new FormData();
+    	formData.append('file',d.avatarUpload[0])
+		formData.append('email',d.email)
+
+      instanceClient.post('resource/document/updateAvatar',formData)
+          .then( res => {
+			
+
+
+			const configClient = {
+				baseURL: 'http://localhost:9000/',
+				headers: {
+				"Access-Control-Allow-Origin": "*",
+				'Authorization' : 'Bearer ' +  localStorage.getItem('token')
+				
+				}
+			};
+	  
+		  const instanceClient = axios.create(configClient);
+
+		  instanceClient.get('resource/candidate/find/fullCandidate/byEmail?email='+d.email)
+		  .then( res => {
+			changeCandidate(res.data.output);
+			//reset(res.data.output);
+			changeLoader(false);
+		  
+		  }, err => {
+			  updateAppState({ authenticated: false})
+			  console.log("erroe1 " + err) ;
+		  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //changeCandidate(data);
+            //reset(res.data.output);
+            //changeLoader(false);
+          
+          }, err => {
+            updateAppState({ authenticated: false})
+            console.log("erroe1 " +err);
+          });
 
       
           
