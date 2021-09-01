@@ -284,14 +284,14 @@ function ProfileComponentNew(){
                                     <ul className="row social-link no-margin" id="socialFragment">
                                     {(candidate.socialProfiles || []).map(obj => (
                                         <div>
-                                            {obj.type==='FaceBook' &&
+                                            {obj.type==='facebook' &&
                                              <li>
                                              <i className="fab fa-facebook-f"></i>
                                              <span style={{ marginLeft: "10px" }} >{obj.url}</span>
 
                                              </li>
                                             }
-                                           {obj.type==='Twitter' &&
+                                           {obj.type==='twitter' &&
                                         <li>
                                             <i className="fab fa-twitter"></i>
                                             <span style={{marginLeft: "10px"}} >{obj.url}</span>
@@ -309,7 +309,7 @@ function ProfileComponentNew(){
                                             <span style={{marginLeft: "10px"}} >{obj.url}</span>
                                         </li>
                                             }
-                                             {obj.type==='exclamation' &&
+                                             {obj.type==='other' &&
                                         <li>
                                             <i className="fas fa-exclamation"></i>
                                             <span style={{marginLeft: "10px"}} >{obj.url}</span>
