@@ -77,14 +77,14 @@ export function SummaryModelComponent({data,changeLoader,changeCandidate}) {
                     <div class="form-group">
                         <label for="firstName">First Name(*)</label> <input
                             class="form-control" id="firstName"
-                            {...register("firstName", { required: "First Name is required", maxLength: 20 })}
+                            {...register("firstName", { required: "First Name is required", maxLength:{value:25,message:"Can not  exceed maximum length"},pattern:{value:/^([^0-9]*)$/,message:"No numbers"}})}
                             placeholder="Enter First Name" />
                          <p style={{color : "red"}}>{errors.firstName && errors.firstName.message}</p>
                         
                     </div>
                     <div class="form-group">
                         <label for="lastName">Last Name(*)</label> <input
-                        {...register("lastName", { required: "Last Name is required", maxLength: 20 })}
+                        {...register("lastName", { required: "Last Name is required",  maxLength:{value:25,message:"Can not  exceed maximum length"},pattern:{value:/^([^0-9]*)$/,message:"No numbers"}})}
                             class="form-control" id="lastName"
                             placeholder="Enter Last Name" />
                          <p style={{color : "red"}}>{errors.lastName && errors.lastName.message}</p>
@@ -93,7 +93,7 @@ export function SummaryModelComponent({data,changeLoader,changeCandidate}) {
                     <div class="form-group">
                         <label for="profileTitle">Profile Title(*)</label> <input
                             class="form-control"
-                            {...register("profileTitle", { required: "profile Title is required", maxLength: 20 })}
+                            {...register("profileTitle", { required: "profile Title is required", maxLength:{value:25,message:"Can not  exceed maximum length"}})}
                             id="profileTitle"
                             placeholder="Enter Profile Title" />
                             <p style={{color : "red"}}>{errors.profileTitle && errors.profileTitle.message}</p>
@@ -101,7 +101,7 @@ export function SummaryModelComponent({data,changeLoader,changeCandidate}) {
                     <div class="form-group">
                         <label for="summary">Summary(*)</label>
                         <textarea class="form-control" rows="5" id="summary"
-                         {...register("summary", { required: "Summary is required", maxLength: 100 })}
+                         {...register("summary", { required: "Summary is required", maxLength:{value:300,message:"Can not  exceed maximum length"}})}
                             ></textarea>
                          <p style={{color : "red"}}>{errors.summary && errors.summary.message}</p>
                            

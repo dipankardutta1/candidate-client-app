@@ -14,7 +14,9 @@ import {HobbyModelComponent} from './HobbyModelComponent';
 import {LanguageModelComponent} from './LanguageModelComponent';
 import {ProfileModelComponent} from './ProfileModelComponent';
 import {WorkExpModelComponent} from './WorkExpModelComponent';
-//import {AvatarModelComponent} from './AvatarModelComponent';
+import {AvatarModelComponent} from './AvatarModelComponent';
+
+import {EducationModelComponent} from './EducationModelComponent';
 
 function ProfileComponentNew(){
 
@@ -123,8 +125,55 @@ function ProfileComponentNew(){
               setLoader(false);
             
             }, err => {
-              updateAppState({ authenticated: false})
-              console.log("erroe1");
+
+                {/*
+                const configClient1 = {
+                    baseURL: 'http://localhost:9999/auth',
+                    headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    'Authorization' : 'Bearer ' +  localStorage.getItem('token')
+                    
+                    }
+                };
+                const instanceClient1 = axios.create(configClient1);
+                instanceClient1.get('/user/getDetails?username='+res.data.name)
+                .then( res => {
+                    const candidateDto={
+                        "firstName":res.data.output.firstName,
+                        "lastName":res.data.output.lastName,
+                        "email":res.data.output.email,
+                        "profileTitle":"NA",
+                       "summary":"NA",
+                       "workExperience":"Fresher",
+                       "releventExperience":"Fresher",
+                      "maritalStatus":"single",
+                        "placeOfBirth":"NA",
+                    };
+                    const instanceClient2 = axios.create(configClient);
+                    instanceClient2.post('resource/candidate/save',candidateDto)
+                    
+                    .then( res => {
+                      
+                      setCandidate(res.data.output);
+                      reset(res.data.output);
+                      setLoader(false);
+                    
+                    }, err => {
+                      console.log("NOt saved ");
+                    });
+                  
+                 
+                
+                }, err => {
+                    
+                  updateAppState({ authenticated: false})
+                  console.log("erroe1");
+                });
+
+            */}
+
+                updateAppState({ authenticated: false})
+                console.log("erroe1 " + err) ;
             });
               
             },
@@ -164,6 +213,7 @@ function ProfileComponentNew(){
 
 
 
+
                                         {candidate.isAvatarUploaded == null || candidate.isAvatarUploaded == false ?
                                         (
                                             <img src={avatar} alt="" className="image" id="avatarImage"></img>
@@ -173,8 +223,7 @@ function ProfileComponentNew(){
                                                 ) :("")
                                                     
                                                 
-                                        )}
-                                         
+                                        )} 
                                         
                                         <div className="middle">
                                             <a data-toggle="modal" data-target="#avatarModel" href="#"
@@ -183,7 +232,7 @@ function ProfileComponentNew(){
                                         </div>
 
                                         <h3>
-                                            <span id="firstNameAvatar" style={{ fontSize: "16px"}}>{candidate.firstName}</span> 
+                                            <span id="firstNameAvatar" style={{ fontSize: "16px"}}>{candidate.firstName}&nbsp;</span> 
                                             <span id="lastNameAvatar" style={{ fontSize: "16px" }}>{candidate.lastName}</span>
                                         </h3>
                                         <span id="profileTitleAvatar" style={{fontSize: "12px" }} >{candidate.profileTitle}</span>
@@ -522,7 +571,7 @@ function ProfileComponentNew(){
                                     </div>
                                     <h2 className="rit-titl">
                                         <i className="fas fa-graduation-cap"></i> Education <a
-                                            data-toggle="modal" data-target="#educationModel" href="#"
+                                            data-toggle="modal" data-target="#educationEntriesModel" href="#"
                                             style={{float: "right"}}><i className="fa fa-edit"></i>Edit</a>
 
                                     </h2>
@@ -536,7 +585,7 @@ function ProfileComponentNew(){
 <ul>
  <li className="col-md-6"><span>{obj.degree}</span> <br/> 
  <span>{obj.fieldOfStudy}</span>-<span>{obj.school}</span> <br/> 
- <span>{Moment(obj.startDate).format('MM/DD/YYYY')}</span>-<span>{Moment(obj.startDate).format('MM/DD/YYYY')}</span> <br/>
+ <span>{Moment(obj.startDate).format('MM/DD/YYYY')}</span>-<span>{Moment(obj.endDate).format('MM/DD/YYYY')}</span> <br/>
  </li>
 </ul>
 
@@ -610,8 +659,9 @@ function ProfileComponentNew(){
     <ProfileModelComponent data={candidate} changeLoader={changeLoader} changeCandidate={changeCandidate}/>
     <WorkExpModelComponent data={candidate} changeLoader={changeLoader} changeCandidate={changeCandidate}/>
     
-    
-
+    <EducationModelComponent data={candidate} changeLoader={changeLoader} changeCandidate={changeCandidate}/>
+   
+    <AvatarModelComponent data={candidate} changeLoader={changeLoader} changeCandidate={changeCandidate} />
 
     </div>
     );

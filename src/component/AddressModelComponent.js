@@ -95,26 +95,26 @@ export function AddressModelComponent({data,changeLoader,changeCandidate}) {
                                                 <input type="text"
                                                 key={field.id}
                                                 class="form-control country" 
-                                                {...register(`addresses.${index}.country`, { required: "Country is required", maxLength: 50 })}/>
+                                                {...register(`addresses.${index}.country`, { required: "Country is required", maxLength:{value:25,message:"Can not  exceed maximum length"} })}/>
                                                 <p style={{color : "red"}}>{errors.addresses?.[index]?.country?.message}</p></td>
                                             
 
                                             <td class="col-sm-2"><input type="text"
                                                 class="form-control state"
                                                 key={field.id}
-                                                {...register(`addresses.${index}.state`, { required: "State is required", maxLength: 50 })}/>
+                                                {...register(`addresses.${index}.state`, { required: "State is required", maxLength:{value:25,message:"Can not  exceed maximum length"} })}/>
                                                 <p style={{color : "red"}}>{errors.addresses?.[index]?.state?.message}</p></td>
 
                                             <td class="col-sm-2"><input type="text"
                                                 class="form-control city"
                                                 key={field.id}
-                                                {...register(`addresses.${index}.city`, { required: "City is required", maxLength: 50 })}/>
+                                                {...register(`addresses.${index}.city`, { required: "City is required", maxLength:{value:25,message:"Can not  exceed maximum length"}})}/>
                                                 <p style={{color : "red"}}>{errors.addresses?.[index]?.city?.message}</p></td>
 
                                             <td class="col-sm-5"><input type="text"
                                                 class="form-control addressLine" 
                                                 key={field.id}
-                                                {...register(`addresses.${index}.addressLine`, { required: "Address is required", maxLength: 200 })}/>
+                                                {...register(`addresses.${index}.addressLine`, { required: "Address is required", maxLength:{value:100,message:"Can not  exceed maximum length"} })}/>
                                                 <p style={{color : "red"}}>{errors.addresses?.[index]?.addressLine?.message}</p></td>
                                             
                                             <td class="col-sm-1"> {index == 0? <a class="deleteRow"></a>  : <input 

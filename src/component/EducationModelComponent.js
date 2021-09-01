@@ -6,7 +6,7 @@ import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 
-export function WorkExpModelComponent({data,changeLoader,changeCandidate}) {
+export function EducationModelComponent({data,changeLoader,changeCandidate}) {
 
 
     
@@ -16,18 +16,12 @@ export function WorkExpModelComponent({data,changeLoader,changeCandidate}) {
 
     const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
         control,
-        name: "experienceEntries"
+        name: "educationEntries"
       });
     
-     
-   
- 
-      
-        
-
-     const onExperienceEntriesSubmit= data => {
+     const onEducationEntriesSubmit= data => {
        
-        (data.experienceEntries || []).map((item, index) => (
+        (data.educationEntries || []).map((item, index) => (
             item.candidateId = localStorage.getItem('email')
         ));
 
@@ -46,10 +40,10 @@ export function WorkExpModelComponent({data,changeLoader,changeCandidate}) {
 
       const instanceClient = axios.create(configClient);
 
-      instanceClient.post('resource/experienceEntry/saveMultiple',data.experienceEntries)
+      instanceClient.post('resource/educationEntry/saveMultiple',data.educationEntries)
           .then( res => {
             changeCandidate(data);
-            //reset(res.data.output);
+            //reset(res.data.output);educationEntry
             changeLoader(false);
           
           }, err => {
@@ -64,7 +58,7 @@ export function WorkExpModelComponent({data,changeLoader,changeCandidate}) {
 
 
     return (
-        <div class="modal fade" id="experienceEntriesModel" tabindex="-1" role="dialog"
+        <div class="modal fade" id="educationEntriesModel" tabindex="-1" role="dialog"
                 aria-labelledby="myModalLabel" aria-hidden="true"
                 data-keyboard="false" data-backdrop="static">
                 <div class="modal-dialog">
@@ -75,44 +69,41 @@ export function WorkExpModelComponent({data,changeLoader,changeCandidate}) {
                                 <span aria-hidden="true">&times;</span> <span class="sr-only">Close</span>
                             </button>
                             <h4 class="modal-title" id="myModalLabel">
-                                <i class="far fa-user"></i> Work Experience
+                                <i class="far fa-user"></i> Education 
                             </h4>
                         </div>
                         {/* Modal Body */}
 
                         <div class="modal-body">
-                            <form id="experienceEntries-form" onSubmit={handleSubmit(onExperienceEntriesSubmit)}>
-                                <table id="experienceEntriesTable" class=" table order-list">
+                            <form id="educationEntries-form" onSubmit={handleSubmit(onEducationEntriesSubmit)}>
+                                <table id="educationEntriesTable" class=" table order-list">
 
                                     <thead>
                                     <tr>
-									<td>Title</td>
-									<td>Start Date</td>
+									<td>Degree</td>
+                                    <td>Start Date</td>
 									<td>End Date</td>
-									<td>Company</td>
-									<td>Industry</td>
-									<td>Is Current Company</td>
-									<td>Notice Period</td>
-									<td>Summary</td>
+									<td>School</td>
+									<td>Field Of Study</td>
 									
 								</tr>
                                     </thead>
                                     <tbody>
                                     {(fields || []).map((field, index) => (
                                         <tr>
-                                            <td class="col-sm-1">
+                                            <td class="col-sm-2">
                                                 <input type="text"
                                                 key={field.id}
-                                                class="form-control title" 
-                                                {...register(`experienceEntries.${index}.title`, { required: "Title is required",maxLength:{value:20,message:"Can not  exceed maximum length"}})}/>
-                                                <p style={{color : "red"}}>{errors.experienceEntries?.[index]?.title?.message}</p></td>
+                                                class="form-control degree" 
+                                                {...register(`educationEntries.${index}.degree`, { required: "Degree is required",maxLength:{value:20,message:"Can not  exceed maximum length"}})}/>
+                                                <p style={{color : "red"}}>{errors.educationEntries?.[index]?.degree?.message}</p></td>
                                             
-                                                <td class="col-sm-1">
+                                                <td class="col-sm-2">
                                                 
                                                 <Controller
                                                     
                                                     control={control}
-                                                    name={`experienceEntries.${index}.startDate`}
+                                                    name={`educationEntries.${index}.startDate`}
                                                     rules={{ required: "Start Date is required" }} 
                                                     render={({ field: { onChange, onBlur, value, ref } }) => (
                                                     <ReactDatePicker
@@ -140,16 +131,16 @@ export function WorkExpModelComponent({data,changeLoader,changeCandidate}) {
                                                     
                                                  />
                                                 */}
-                                                <p style={{color : "red"}}>{errors.experienceEntries?.[index]?.startDate?.message}</p>
+                                                <p style={{color : "red"}}>{errors.educationEntries?.[index]?.startDate?.message}</p>
                                                 </td>
 
-                                                <td class="col-sm-1">
+                                                <td class="col-sm-2">
 
                                                     
                                                     <Controller
                                                         
                                                         control={control}
-                                                        name={`experienceEntries.${index}.endDate`}
+                                                        name={`educationEntries.${index}.endDate`}
                                                         rules={{ required: "End Date is required" }} 
                                                         render={({ field: { onChange, onBlur, value, ref } }) => (
                                                         <ReactDatePicker
@@ -178,44 +169,21 @@ export function WorkExpModelComponent({data,changeLoader,changeCandidate}) {
                                                  /> 
 
                                                  */}
-                                                   <p style={{color : "red"}}>{errors.experienceEntries?.[index]?.endDate?.message}</p></td>
+                                                   <p style={{color : "red"}}>{errors.educationEntries?.[index]?.endDate?.message}</p></td>
    
-                                                   <td class="col-sm-1"><input type="text"
-                                                class="form-control company"
+                                                   <td class="col-sm-2"><input type="text"
+                                                class="form-control school"
                                                 key={field.id}
-                                                {...register(`experienceEntries.${index}.company`, { required: "company is required",maxLength:{value:20,message:"Can not  exceed maximum length"}})}/>
-                                                <p style={{color : "red"}}>{errors.experienceEntries?.[index]?.company?.message}</p></td>
+                                                {...register(`educationEntries.${index}.school`, { required: "school is required",maxLength:{value:20,message:"Can not  exceed maximum length"}})}/>
+                                                <p style={{color : "red"}}>{errors.educationEntries?.[index]?.school?.message}</p></td>
 
-                                            <td class="col-sm-5"><input type="text"
-                                                class="form-control industry" 
+                                            <td class="col-sm-2"><input type="text"
+                                                class="form-control fieldOfStudy" 
                                                 key={field.id}
-                                                {...register(`experienceEntries.${index}.industry`, { required: "industry is required", maxLength:{value:25,message:"Can not  exceed maximum length"} })}/>
-                                                <p style={{color : "red"}}>{errors.experienceEntries?.[index]?.industry?.message}</p></td>
-                 
-                                                <td class="col-sm-1">
-                                                < select  key={field.id} class="form-control type"   {...register(`experienceEntries.${index}.isCurrent`)}>
-                                                    <option value='true'>  Yes </option>
-                                                    <option value='false'> No </option>
-                                                </select>
-                                                <p style={{color : "red"}}>{errors.experienceEntries?.[index]?.isCurrent?.message}</p>
-                                                </td>
-                                          
-                                                <td class="col-sm-1"><input type="number"
-                                                class="form-control noticePeriod"
-                                                key={field.id}
-                                                {...register(`experienceEntries.${index}.noticePeriod`, { required: "Notice Period is required", min:{value:0,message:"Range sholld be from 0 to 365"},max:{value:365,message:"Range sholld be from 0 to 365"}})}/>
-                                                <p style={{color : "red"}}>{errors.experienceEntries?.[index]?.noticePeriod?.message}</p></td>
-
-                                          
-                                          
-                                            <td class="col-sm-1"><input type="text"
-                                                class="form-control summary"
-                                                key={field.id}
-                                                {...register(`experienceEntries.${index}.summary`, { required: "summary is required",maxLength:{value:100,message:"Can not  exceed maximum length"}})}/>
-                                                <p style={{color : "red"}}>{errors.experienceEntries?.[index]?.summary?.message}</p></td>
-
+                                                {...register(`educationEntries.${index}.fieldOfStudy`, { required: "Field Of Study is required", maxLength:{value:20,message:"Can not  exceed maximum length"} })}/>
+                                                <p style={{color : "red"}}>{errors.educationEntries?.[index]?.fieldOfStudy?.message}</p></td>
                                                                      
-                                            <td class="col-sm-1"> {index == 0? <a class="deleteRow"></a>  : <input 
+                                            <td class="col-sm-2"> {index == 0? <a class="deleteRow"></a>  : <input 
                                                 type="button" class="ibtnDel btn btn-md btn-danger "
                                                 value="Delete" onClick={() => remove(index)}/>}</td>
                                             
@@ -226,16 +194,16 @@ export function WorkExpModelComponent({data,changeLoader,changeCandidate}) {
                                     <tfoot>
                                         <tr>
                                             <td colspan="8" style={{textAlign : 'left'}}><input
-                                                type="button" class="btn btn-lg btn-block " id="addRowWorkExp"
-                                                value="Add Row" onClick={() => append({"id":"","title":"","summary":"","isDeleted":false,"startDate":null,"endDate":null,
-                                                "company":"","industry":"","isCurrent":false,"noticePeriod":""})}/></td>
+                                                type="button" class="btn btn-lg btn-block " id="addRowEducationEntry"
+                                                value="Add Row" onClick={() => append({"id":"","degree":"","startDate":null,"endDate":null,"isDeleted":false,
+                                                "school":"","fieldOfStudy":""})}/></td>
                                         </tr>
                                         <tr>
                                         </tr>
                                     </tfoot>
                                 </table>
                                 {fields && fields.length? (
-                                <button type="submit" class="btn btn-primary" id="workExpBtn" >
+                                <button type="submit" class="btn btn-primary" id="eduExpBtn" >
                                     Save changes</button>
                                  ): ""}
                             </form>

@@ -91,7 +91,7 @@ export function SkillModelComponent({data,changeLoader,changeCandidate}) {
                                         <input type="text"
 										 key={field.id} 
                                          class="form-control name"
-                                        {...register(`skils.${index}.name`, { required: "Skill is required", maxLength: 50 })}/>
+                                        {...register(`skils.${index}.name`, { required: "Skill is required", maxLength:{value:25,message:"Can not  exceed maximum length"}})}/>
                                         <p style={{color : "red"}}>{errors.skils?.[index]?.name?.message}</p></td>
 									<td class="col-sm-3">
                                         <input type="number"

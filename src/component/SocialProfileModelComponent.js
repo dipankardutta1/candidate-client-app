@@ -116,7 +116,7 @@ export function SocialProfileModelComponent({data,changeLoader,changeCandidate})
 									<td class="col-sm-6">
                                         <input type="text"
                                          key={field.id} 
-                                         {...register(`socialProfiles.${index}.url`, { required: "Url is required"})}
+                                         {...register(`socialProfiles.${index}.url`, { required: "Url is required",maxLength:{value:50,message:"Can not  exceed maximum length"}})}
 										class="form-control url"
 										 />
                                          <p style={{color : "red"}}>{errors.socialProfiles?.[index]?.url?.message}</p></td>

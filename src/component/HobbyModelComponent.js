@@ -123,7 +123,7 @@ export function HobbyModelComponent({data,changeLoader,changeCandidate}) {
 									<td class="col-sm-6">
                                         <input type="text"
                                          key={field.id} 
-                                         {...register(`hobbies.${index}.hobby`, { required: "Hobby is required"})}
+                                         {...register(`hobbies.${index}.hobby`, { required: "Hobby is required",maxLength:{value:10,message:"Can not  exceed maximum length"}})}
 										class="form-control url"
 										 />
                                          <p style={{color : "red"}}>{errors.hobbies?.[index]?.hobby?.message}</p></td>

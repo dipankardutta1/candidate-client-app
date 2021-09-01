@@ -91,12 +91,12 @@ export function MobileModelComponent({data,changeLoader,changeCandidate}) {
                                         <input type="number"
 										 key={field.id} 
                                          class="form-control countryCode"
-                                        {...register(`mobiles.${index}.countryCode`, { required: "Country code needed"})}/>
+                                        {...register(`mobiles.${index}.countryCode`, { required: "Country code needed",maxLength:{value:5,message:"Can not  exceed maximum length"}})}/>
                                         <p style={{color : "red"}}>{errors.mobiles?.[index]?.countryCode?.message}</p></td>
 									<td class="col-sm-8">
                                         <input type="number"
                                          key={field.id} 
-                                         {...register(`mobiles.${index}.mobileNumber`, { required: "Contact Number is must"})}
+                                         {...register(`mobiles.${index}.mobileNumber`, { required: "Contact Number is must",maxLength:{value:15,message:"Can not  exceed maximum length"}})}
 										class="form-control mobileNumber"
 										 />
                                          <p style={{color : "red"}}>{errors.mobiles?.[index]?.mobileNumber?.message}</p></td>

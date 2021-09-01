@@ -27,7 +27,9 @@ export function ProfileModelComponent({data,changeLoader,changeCandidate}) {
           
           }
       };
-      
+      //this pattern you have used in birth Date
+      //,pattern: { value: /^(((0)[0-9])|((1)[0-2]))(\/)([0-2][0-9]|(3)[0-1])(\/)\d{4}$/i,message: "Invalid date"
+                        
       const instanceClient = axios.create(configClient);
 
       instanceClient.put('resource/candidate/update',data)
@@ -84,7 +86,7 @@ export function ProfileModelComponent({data,changeLoader,changeCandidate}) {
                         <label for="aliasName">Alias Name(*)</label> 
                         <input
                             class="form-control" id="aliasName"
-                            {...register("aliasName", { required: "Alias Name is required"})}
+                            {...register("aliasName", { required: "Alias Name is required",maxLength:{value:15,message:"Can not  exceed maximum length"},pattern:{value:/^([^0-9]*)$/,message:"No numbers"}})}
                             placeholder="Enter Alias Name" />
                          <p style={{color : "red"}}>{errors.aliasName && errors.aliasName.message}</p>
                         
@@ -92,7 +94,7 @@ export function ProfileModelComponent({data,changeLoader,changeCandidate}) {
                     <div class="form-group">
                         <label for="placeOfBirth">placeOfBirth(*)</label> 
                         <input
-                        {...register("placeOfBirth", { required: "Place Of Birth is required"})}
+                        {...register("placeOfBirth", { required: "Place Of Birth is required",maxLength:{value:25,message:"Can not  exceed maximum length"},pattern:{value:/^([^0-9]*)$/,message:"No numbers"}})}
                             class="form-control" id="placeOfBirth"
                             placeholder="Enter Place of Birth" />
                          <p style={{color : "red"}}>{errors.placeOfBirth && errors.placeOfBirth.message}</p>
@@ -111,11 +113,10 @@ export function ProfileModelComponent({data,changeLoader,changeCandidate}) {
                     <div class="form-group">
                         <label for="birthDate">Birth Date(*)</label>
                         
-
                         <Controller
                                 control={control}
                                 name="birthDate"
-                                rules={{ required: "Birth Date is Required" ,pattern: { value: /^(((0)[0-9])|((1)[0-2]))(\/)([0-2][0-9]|(3)[0-1])(\/)\d{4}$/i,message: "Invalid date"}}} 
+                                rules={{ required: "Birth Date is Required" }} 
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
                                 <ReactDatePicker
                                     onChange={onChange}

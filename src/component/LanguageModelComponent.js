@@ -92,7 +92,7 @@ export function LanguageModelComponent({data,changeLoader,changeCandidate}) {
 									<td class="col-sm-4">
                                         <input type="text"
                                          key={field.id} 
-                                         {...register(`languages.${index}.language`, { required: "Language is required"})}
+                                         {...register(`languages.${index}.language`, { required: "Language is required",maxLength:{value:25,message:"Can not  exceed maximum length"}})}
 										class="form-control url"
 										 />
                                          <p style={{color : "red"}}>{errors.languages?.[index]?.language?.message}</p></td>
