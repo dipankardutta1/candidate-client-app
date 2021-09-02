@@ -17,6 +17,8 @@ import {WorkExpModelComponent} from './WorkExpModelComponent';
 import {AvatarModelComponent} from './AvatarModelComponent';
 
 import {EducationModelComponent} from './EducationModelComponent';
+import { UploadResumeModelComponent } from './UploadResumeModelComponent';
+import { DownloadResumeModelComponent } from './DownloadResumeModelComponent';
 
 function ProfileComponentNew(){
 
@@ -264,11 +266,11 @@ function ProfileComponentNew(){
                                             <i className="fas fa-globe-americas"></i>
                                         </div>
                                         <div class="detail">
-                                        {(candidate.mobiles || []).map(obj => (
+                                        
                                             <div>
-                                            <span >{obj.mobileNumber}</span> <br/> 
+                                            <span >{candidate.email}</span> <br/> 
                                             </div>
-                                        ))}
+                                       
 
                                         </div>
                                     </div>
@@ -663,6 +665,9 @@ function ProfileComponentNew(){
    
     <AvatarModelComponent data={candidate} changeLoader={changeLoader} changeCandidate={changeCandidate} />
 
+    <UploadResumeModelComponent data={candidate} changeLoader={changeLoader} changeCandidate={changeCandidate} />
+    
+    <DownloadResumeModelComponent data={candidate} changeLoader={changeLoader} changeCandidate={changeCandidate} />
     </div>
     );
     }
