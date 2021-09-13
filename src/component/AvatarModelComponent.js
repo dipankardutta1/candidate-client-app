@@ -12,14 +12,70 @@ export function AvatarModelComponent({data,changeLoader,changeCandidate}) {
         defaultValues : data
       });
 
-     
-      
-      // for addresses
+	  
+
+async function isFileOk(avatarUpload){
+	const file =avatarUpload[0];
+	if(file.size>1000000){
+		
+		return false;
+	}
+	var signatureUpper;
+	var slice = file.slice(0,4);      // Get the first 4 bytes of a file
+	var reader = new FileReader(); 
+let promise = new Promise((resolve, reject) => {
+   // Create instance of file reader. It is asynchronous!
+	reader.readAsArrayBuffer(slice);
+	var flag=false;
+	 // Read the chunk file and return to blob
+	reader.onload = function(e) {
+		
+		var buffer = reader.result;          // The result ArrayBuffer
+		var view = new DataView(buffer);      // Get access to the result bytes
+		var signature = view.getUint32(0, false).toString(16); // Read 4 bytes, big-endian，return hex string
+	 signatureUpper=signature.toUpperCase();
+	
+		switch (signatureUpper) {
+		case '89504E47':
+			flag=true;
+			break;
+		case '47494638':
+			flag=true;
+			break;
+		case '25504446':
+			flag=false;
+			
+			break;
+		case 'FFD8FFDB':
+		case 'FFD8FFE0':
+		case 'FFD8FFE1':
+			flag=true;
+			break;
+		case '504B0304':
+			flag=false;
+			break;
+		default:
+			flag=false;
+		break;
+		}
+		resolve(flag);
+	}
+	
+});
+
+let result = await promise;
+
+return result;
+
+}
+
+
+
+
 
      const onAvatarSubmit= d => {
-       
-
-        
+     
+		
         console.log(d.email);
 		console.log(d.avatarUpload);
         
@@ -44,9 +100,7 @@ export function AvatarModelComponent({data,changeLoader,changeCandidate}) {
 
       instanceClient.post('resource/document/updateAvatar',formData)
           .then( res => {
-			
-
-
+		
 			const configClient = {
 				baseURL: 'http://localhost:9000/',
 				headers: {
@@ -69,24 +123,6 @@ export function AvatarModelComponent({data,changeLoader,changeCandidate}) {
 			  console.log("erroe1 " + err) ;
 		  });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             //changeCandidate(data);
             //reset(res.data.output);
             //changeLoader(false);
@@ -100,7 +136,7 @@ export function AvatarModelComponent({data,changeLoader,changeCandidate}) {
           
 
     }
-   // addresses end
+  
 
 
     return (
@@ -122,9 +158,14 @@ export function AvatarModelComponent({data,changeLoader,changeCandidate}) {
 
 					{/*  Modal Body */}
 					<div class="modal-body">
-						<input  {...register("avatarUpload", { required: "Please Upload an Image"})} id="avatarUpload" type="file" />
+						<input  {...register("avatarUpload", { required: "Please Upload an Image",validate:isFileOk})} id="avatarUpload" type="file" />
                         <p style={{color : "red"}}>{errors.avatarUpload && errors.avatarUpload.message}</p>
-                    </div>
+						<p style={{color : "red"}}>
+							{errors.avatarUpload && errors.avatarUpload.type === "validate" && (
+    					<div className="error">Please check format(img/jpg)and length(1 MB)</div>
+  						)}</p>
+						  
+				    </div>
 
 					{/*  Modal Footer */}
 					<div class="modal-footer">

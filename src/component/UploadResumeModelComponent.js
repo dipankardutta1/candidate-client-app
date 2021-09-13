@@ -14,12 +14,68 @@ export function UploadResumeModelComponent({data,changeLoader,changeCandidate}) 
 
      
       
-      // for addresses
+	  async function isResumeOk(resumeUpload){
+		  
+		const file =resumeUpload[0];
+		if(file.size>2000000){
+			
+			return false;
+		}
+		var signatureUpper;
+		var slice = file.slice(0,4);      // Get the first 4 bytes of a file
+		var reader = new FileReader(); 
+	let promise = new Promise((resolve, reject) => {
+	   // Create instance of file reader. It is asynchronous!
+		reader.readAsArrayBuffer(slice);
+		var flag=false;
+		 // Read the chunk file and return to blob
+		 reader.onload = function(e) {
+			var buffer = reader.result;          // The result ArrayBuffer
+			var view = new DataView(buffer);      // Get access to the result bytes
+			var signature = view.getUint32(0, false).toString(16); // Read 4 bytes, big-endian，return hex string
+		 signatureUpper=signature.toUpperCase();
+			
+			switch (signatureUpper) {
+			case '89504E47':
+				flag=false;
+				break;
+			case '47494638':
+				flag=false;
+				break;
+			case '25504446':
+				flag=true;
+			
+				//pdf
+				break;
+			case 'FFD8FFDB':
+			case 'FFD8FFE0':
+			case 'FFD8FFE1':
+				flag=false;
+				break;
+			case '504B0304':
+				flag=true;
+				
+				//docx
+				break;
+				
+			default:
+				flag=false;
+			break;
+			}
+			resolve(flag);
+		}
+		
+		
+	});
+	
+	let result = await promise;
+	return result;
+	
+	}
+	
 
      const onResumeUploadSubmit= d => {
        
-
-        
         console.log(d.email);
 		console.log(d.avatarUpload);
         
@@ -70,23 +126,6 @@ export function UploadResumeModelComponent({data,changeLoader,changeCandidate}) 
 		  });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             //changeCandidate(data);
             //reset(res.data.output);
             //changeLoader(false);
@@ -122,9 +161,13 @@ export function UploadResumeModelComponent({data,changeLoader,changeCandidate}) 
 
 					{/* Modal Body */}
 					<div class="modal-body">
-						<input {...register("resumeUpload", { required: "Please Upload a file"})}  id="resumeUpload" type="file" />
+						<input {...register("resumeUpload", { required: "Please Upload a file",validate:isResumeOk})}  id="resumeUpload" type="file" />
 					</div>
-
+					<p style={{color : "red"}}>{errors.resumeUpload && errors.resumeUpload.message}</p>
+						<p style={{color : "red"}}>
+							{errors.resumeUpload && errors.resumeUpload.type === "validate" && (
+    					<div className="error">Please check format(doc/docx/pdf only)and length(2 MB only)</div>
+  						)}</p>
 					{/* Modal Footer */}
 					<div class="modal-footer">
 						<button type="submit" class="btn btn-primary">Save changes</button>

@@ -13,6 +13,8 @@ export function DownloadResumeModelComponent({data,changeLoader,changeCandidate}
       });
 
      
+
+      
       function deleteDoc(title,email) {
         changeLoader(true);
 
@@ -47,94 +49,39 @@ export function DownloadResumeModelComponent({data,changeLoader,changeCandidate}
                 console.log("erroe1 " +err);
             });
 
-      }
+      }//end of deleteDoc
      
-
-     const onResumeUploadSubmit= d => {
+      function downloadDoc(title,email) {
        
+       const configClient = {
+            baseURL: 'http://localhost:9000/',
+            headers: {
+            "Access-Control-Allow-Origin": "*",
+            'Authorization' : 'Bearer ' +  localStorage.getItem('token')
+            }
+        };
+  
+        const instanceClient = axios.create(configClient);
 
-        
-        console.log(d.email);
-		console.log(d.avatarUpload);
-        
-       
-		changeLoader(true);
+        instanceClient.get('resource/document/find/document/'+email+"/"+title)
+        .then( res => {
 
-        const configClient = {
-          baseURL: 'http://localhost:9000/',
-          headers: {
-          "Access-Control-Allow-Origin": "*",
-		  'content-type': 'multipart/form-data',
-          'Authorization' : 'Bearer ' +  localStorage.getItem('token')
-          
-          }
-      };
-
-      const instanceClient = axios.create(configClient);
-
-	  	const formData = new FormData();
-    	formData.append('file',d.resumeUpload[0])
-		formData.append('email',d.email)
-
-      instanceClient.post('resource/document/updateResume',formData)
-          .then( res => {
-			
+               
+                var a = document.createElement("a"); //Create <a>
+                var content=res.data.output.type;
+                a.href = "data:"+content+";base64," + res.data.output.image ; //Image Base64 Goes here
+                a.download = res.data.output.fileName; //File name Here
+                a.click(); //Downloaded file
 
 
-			const configClient = {
-				baseURL: 'http://localhost:9000/',
-				headers: {
-				"Access-Control-Allow-Origin": "*",
-				'Authorization' : 'Bearer ' +  localStorage.getItem('token')
-				
-				}
-			};
-	  
-		  const instanceClient = axios.create(configClient);
+            }, err => {
+                updateAppState({ authenticated: false})
+                console.log("erroe1 " +err);
+            });
 
-		  instanceClient.get('resource/candidate/find/fullCandidate/byEmail?email='+d.email)
-		  .then( res => {
-			changeCandidate(res.data.output);
-			//reset(res.data.output);
-			changeLoader(false);
-		  
-		  }, err => {
-			  updateAppState({ authenticated: false})
-			  console.log("erroe1 " + err) ;
-		  });
+      }//end of downloadDoc
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //changeCandidate(data);
-            //reset(res.data.output);
-            //changeLoader(false);
-          
-          }, err => {
-            updateAppState({ authenticated: false})
-            console.log("erroe1 " +err);
-          });
-
-      
-          
-
-    }
-   // addresses end
+     
 
 
     return (
@@ -178,11 +125,11 @@ export function DownloadResumeModelComponent({data,changeLoader,changeCandidate}
                                             <input type="hidden" class="emailClazz" th:value="${candidateDto.email}" /> 
                                             */}
                                             <span>{obj.fileName}</span>
+                                            
                                         </td>
 								        <td class="col-sm-2">
-                                                <a href="/candidateService/downloadResume?email=${candidateDto.email}&title=${obj.title}|}"><i
-										class="fa fa-download" aria-hidden="true"></i> Click Here</a></td>
-
+                                        <button type="button" class="iDelResume btn fa fa-download" onClick={() => downloadDoc(obj.title,data.email)}></button>
+                                            </td>
                                             <td class="col-sm-1">
                                                 <button type="button" class="iDelResume btn fa fa-trash" onClick={() => deleteDoc(obj.title,data.email)}></button>
                                             </td>
